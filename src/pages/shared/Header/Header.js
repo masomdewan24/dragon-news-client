@@ -6,9 +6,17 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import LestSideNav from '../LeftSideNav/LestSideNav';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider/AuthProvider';
+import { Button, Image } from 'react-bootstrap';
+import { FaUser } from 'react-icons/fa';
 
 const Header = () => {
-  const{ user} = useContext(AuthContext)
+  const { user, logOut } = useContext(AuthContext);
+ 
+  const handleLogOut = () => {
+    logOut()
+      .then(() => { })
+    .catch(error => console.error(error))
+  }
     return (
         <Navbar collapseOnSelect className='mb-4' expand="lg" bg="light" variant="light">
       <Container>
@@ -31,9 +39,31 @@ const Header = () => {
             </NavDropdown>
           </Nav>
           <Nav>
-            <Nav.Link href="#deets">More deets</Nav.Link>
+              <Nav.Link href="#deets">
+                {user?.uid ? 
+                  <>
+                    <span>{user?.displayName}</span>
+                    <Button onClick={handleLogOut} className='ms-2'>LogOut</Button>
+                  </>
+                :
+                  <>
+                    <Link className='me-2' to={'/login'}>
+                      <Button>Login</Button>
+                    </Link>
+                    <Link to={'/register'}>
+                      <Button>Register</Button>
+                    </Link>
+                </>}
+                
+            </Nav.Link>
             <Nav.Link eventKey={2} href="#memes">
-             {user?.displyName}
+                {
+                  user?.uid ? <Image
+                  style={{height: "30px"}}
+                    src={user?.photoURL} roundedCircle />
+                  :
+                    <FaUser></FaUser>
+                }
             </Nav.Link>
                     </Nav>
                     <div className='d-lg-none'>

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { FaBookmark, FaEye, FaShareAlt, FaStar } from 'react-icons/fa';
 
 const NewsSummary = ({ news }) => {
-    console.log(news)
+  
     const { _id, title, details, image_url, author, rating, total_view} = news;
     return (
         <Card className=" mb-5">
