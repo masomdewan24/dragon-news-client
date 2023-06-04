@@ -4,6 +4,7 @@ import NewsSummary from '../NewsSummary/NewsSummary';
 
 const Category = () => {
     const categoryNews = useLoaderData();
+    console.log(categoryNews)
    
     return (
         <div>
