@@ -3,33 +3,37 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { AuthContext } from '../../context/AuthProvider/AuthProvider';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 
 const Registraton = () => {
-  const { createUserWithEmail, updateUserPrifile } = useContext(AuthContext);
+  const { verefyEmail, createUserWithEmail, updateUserPrifile } = useContext(AuthContext);
   const [accepted, SetAccepted] = useState(false);
     const [error, setError] = useState('');
-    const handleSubmit = event => {
-        event.preventDefault();
-        const form = event.target;
-        const name = form.name.value;
-        const email = form.email.value;
-        const photoURL = form.photo.value;
-        const password = form.password.value;
-        // console.log(name, photoURL, email, password)
-        createUserWithEmail(email, password)
-            .then(result => {
-                const user = result.user;
-                console.log(user)
-                setError('')
-              form.reset();
-              handleUpdateUserProfile(name, photoURL)
-            })
-            .catch(error => {
-                console.error(error)
-                setError(error.message)
-        })
-  }
+  const handleSubmit = event => {
+    event.preventDefault();
+    const form = event.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const photoURL = form.photo.value;
+    const password = form.password.value;
+    // console.log(name, photoURL, email, password)
+    createUserWithEmail(email, password)
+      .then(result => {
+        const user = result.user;
+        console.log(user)
+        setError('')
+        form.reset();    
+        handleUpdateUserProfile(name, photoURL);
+        handleVerefyEmail();
+        toast.success('Please Verefy your email.')
+      })
+      .catch(error => {
+        console.error(error)
+        setError(error.message)
+      })
+  };
+
   const handleUpdateUserProfile = (name, photoURL) => {
     const profile = {
       displayName: name,
@@ -39,11 +43,15 @@ const Registraton = () => {
       .then(() => {
       
       })
-    .catch(error => console.error(error))
-    
+    .catch(error => console.error(error))  
   }
   const handleAccepted = (event) => {
     SetAccepted(event.target.checked)
+  }
+  const handleVerefyEmail = () => {
+    verefyEmail()
+      .then(() => { })
+    .catch(error=>console.error(error))
   }
 
     return (

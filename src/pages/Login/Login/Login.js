@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { AuthContext } from '../../context/AuthProvider/AuthProvider';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 const Login = () => {
 
@@ -24,7 +25,12 @@ const Login = () => {
       .then(result => {
         const user = result.user;
         console.log(user)
-        navigate(from, {replace: true})
+        if (user.emailVerified) {
+          navigate(from, {replace: true})
+        }
+        else {
+          toast.error('Your email is not Verified')
+        }
         setError('')
         form.reset();
       })
